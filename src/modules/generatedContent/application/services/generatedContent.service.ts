@@ -24,7 +24,19 @@ export class GeneratedContentService {
     });
   }
 
-  // async findAll(): Promise<GeneratedContent[]> {
-  //   return this.generatedContentRepository.findAll();
-  // }
+  async findByTrackId(trackId: string): Promise<GeneratedContent[]> {
+    return this.generatedContentRepository.findByTrackId(trackId);
+  }
+
+  async findByModuleId(moduleId: string): Promise<GeneratedContent[]> {
+    return this.generatedContentRepository.findByModuleId(moduleId);
+  }
+
+  async findAll(): Promise<GeneratedContent[]> {
+    return this.generatedContentRepository.findAll();
+  }
+
+  async delete(id: string): Promise<void> {
+    this.generatedContentRepository.delete(id);
+  }
 }

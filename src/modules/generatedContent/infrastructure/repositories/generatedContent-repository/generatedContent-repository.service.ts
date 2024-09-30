@@ -30,9 +30,31 @@ export class GeneratedContentRepositoryService {
   //     return await this.prisma.generatedContent.findUnique({ where: { id } });
   //   }
 
-  //   async findAll(): Promise<GeneratedContent[]> {
-  //     return await this.prisma.generatedContent.findMany();
-  //   }
+  async findAll(): Promise<GeneratedContent[]> {
+    return await this.prisma.generatedContent.findMany({
+      include: {
+        questions: true,
+      },
+    });
+  }
+
+  async findByModuleId(moduleId: string): Promise<GeneratedContent[]> {
+    return await this.prisma.generatedContent.findMany({
+      where: { moduleId },
+      include: {
+        questions: true,
+      },
+    });
+  }
+
+  async findByTrackId(trackId: string): Promise<GeneratedContent[]> {
+    return await this.prisma.generatedContent.findMany({
+      where: { trackId },
+      include: {
+        questions: true,
+      },
+    });
+  }
 
   //   async update(
   //     id: string,
@@ -55,7 +77,7 @@ export class GeneratedContentRepositoryService {
   //     }
   //   }
 
-  //   async delete(id: string): Promise<void> {
-  //     await this.prisma.generatedContent.delete({ where: { id } });
-  //   }
+  async delete(id: string): Promise<void> {
+    await this.prisma.generatedContent.delete({ where: { id } });
+  }
 }
