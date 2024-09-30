@@ -14,7 +14,6 @@ export class StudyModuleRepositoryService implements IStudyModuleRepository {
         data: {
           title: studyModule.title,
           description: studyModule.description,
-          studyTime: studyModule.studyTime,
           trackId: studyModule.trackId,
         },
       });
@@ -39,7 +38,6 @@ export class StudyModuleRepositoryService implements IStudyModuleRepository {
         data: {
           title: studyModule.title,
           description: studyModule.description,
-          studyTime: studyModule.studyTime,
           trackId: studyModule.trackId,
         },
       });

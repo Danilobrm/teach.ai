@@ -20,14 +20,12 @@ export class StudyModuleController {
     body: {
       title: string;
       description: string;
-      studyTime: number;
       trackId: string;
     },
   ) {
     const studyModule = new StudyModule(
       body.title,
       body.description,
-      body.studyTime,
       body.trackId,
     );
 
@@ -51,14 +49,12 @@ export class StudyModuleController {
     body: {
       title: string;
       description: string;
-      studyTime: number;
       trackId: string;
     },
   ) {
     const studyModule = new StudyModule(
       body.title,
       body.description,
-      body.studyTime,
       body.trackId,
     );
     return this.studyModuleService.update(id, studyModule);
