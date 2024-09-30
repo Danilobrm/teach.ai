@@ -15,6 +15,7 @@ model User {
   studyTrackId     String?       // Chave estrangeira para a trilha de estudos
   studyPlans       StudyPlan[]
   studyTrack       StudyTrack?   @relation(fields: [studyTrackId], references: [id])
+  quizProgress     UserQuizProgress[] // Relacionamento com o progresso do quiz
 }
 
 model StudyTrack {
@@ -23,9 +24,7 @@ model StudyTrack {
   description String?        // Descrição da trilha de estudos
   modules     StudyModule[]  // Módulos associados a essa trilha
 
-  User User[]
-
-  GeneratedContent GeneratedContent[]
+  User User[] 
 }
 
 model GeneratedContent {
@@ -38,9 +37,7 @@ model GeneratedContent {
   createdAt   DateTime     @default(now()) // Data de criação do conteúdo
   updatedAt   DateTime     @updatedAt        // Data da última atualização do conteúdo
 
-  module      StudyModule? @relation(fields: [moduleId], references: [id]) 
-  track       StudyTrack?  @relation(fields: [trackId], references: [id])
-
+  module      StudyModule? @relation(fields: [moduleId], references: [id])
   questions    Quiz[]       // Lista de quizzes associadas a este conteúdo gerado
 }
 
@@ -48,21 +45,21 @@ model StudyModule {
   id          String       @id @default(uuid())
   title       String
   description String
-  studyTime   Int          // Tempo total necessário para estudar o módulo (em minutos)
   trackId     String       // Chave estrangeira para a trilha de estudos
   track       StudyTrack   @relation(fields: [trackId], references: [id])
   studyPlans  StudyPlan[]  // Relacionamento com StudyPlan
-
   generatedContents GeneratedContent[] // Lista de conteúdos gerados associados a este módulo
 }
 
 model Quiz {
-  id              String       @id @default(uuid())
-  question        String       // Texto da pergunta do quiz
-  correctAnswer   String       // Resposta correta
-  options         String[]     // Alternativas para a pergunta
-  generatedContentId String     // Chave estrangeira para associar a pergunta ao conteúdo gerado
-  generatedContent GeneratedContent @relation(fields: [generatedContentId], references: [id])
+  id                   String       @id @default(uuid())
+  question             String       // Texto da pergunta do quiz
+  correctAnswerIndex   Int          // Índice da resposta correta na lista de opções
+  options              String[]     // Alternativas para a pergunta
+  generatedContentId   String       // Chave estrangeira para associar a pergunta ao conteúdo gerado
+  generatedContent     GeneratedContent @relation(fields: [generatedContentId], references: [id])
+
+  UserQuizProgress     UserQuizProgress[]
 }
 
 
@@ -75,4 +72,17 @@ model StudyPlan {
 
   user      User         @relation(fields: [userId], references: [id])
   module    StudyModule  @relation(fields: [moduleId], references: [id])
+}
+
+model UserQuizProgress {
+  id             String   @id @default(uuid())
+  userId         String   // Chave estrangeira para o usuário
+  quizId         String   // Chave estrangeira para o quiz
+  score           Int      // Pontuação obtida no quiz
+  attempts        Int      // Número de tentativas realizadas
+  completed       Boolean  // Status de conclusão
+  completedAt     DateTime? // Data em que o quiz foi concluído
+
+  user            User     @relation(fields: [userId], references: [id])
+  quiz            Quiz     @relation(fields: [quizId], references: [id])
 }
