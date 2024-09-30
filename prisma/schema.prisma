@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String        @id @default(uuid())
+  password         String
+  email            String        @unique
+  dailyStudyTime   Int?          // Tempo de estudo diário em minutos (opcional)
+  studyTrackId     String?       // Chave estrangeira para a trilha de estudos
+  studyPlans       StudyPlan[]
+  studyTrack       StudyTrack?   @relation(fields: [studyTrackId], references: [id])
+}
+
+model StudyTrack {
+  id          String         @id @default(uuid())
+  title       String         // Nome da trilha de estudos
+  description String?        // Descrição da trilha de estudos
+  modules     StudyModule[]  // Módulos associados a essa trilha
+
+  User User[]
+
+  GeneratedContent GeneratedContent[]
+}
+
+model GeneratedContent {
+  id          String       @id @default(uuid())
+  title       String       // Título do conteúdo gerado
+  description String?      // Descrição do conteúdo
+  content     String       // Conteúdo gerado pela IA
+  moduleId    String?      // Opcional: para associar o conteúdo a um módulo específico
+  trackId     String?      // Opcional: para associar o conteúdo a uma trilha específica
+  createdAt   DateTime     @default(now()) // Data de criação do conteúdo
+  updatedAt   DateTime     @updatedAt        // Data da última atualização do conteúdo
+
+  module      StudyModule? @relation(fields: [moduleId], references: [id]) 
+  track       StudyTrack?  @relation(fields: [trackId], references: [id])
+
+  questions    Quiz[]       // Lista de quizzes associadas a este conteúdo gerado
+}
+
+model StudyModule {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  studyTime   Int          // Tempo total necessário para estudar o módulo (em minutos)
+  trackId     String       // Chave estrangeira para a trilha de estudos
+  track       StudyTrack   @relation(fields: [trackId], references: [id])
+  studyPlans  StudyPlan[]  // Relacionamento com StudyPlan
+
+  generatedContents GeneratedContent[] // Lista de conteúdos gerados associados a este módulo
+}
+
+model Quiz {
+  id              String       @id @default(uuid())
+  question        String       // Texto da pergunta do quiz
+  correctAnswer   String       // Resposta correta
+  options         String[]     // Alternativas para a pergunta
+  generatedContentId String     // Chave estrangeira para associar a pergunta ao conteúdo gerado
+  generatedContent GeneratedContent @relation(fields: [generatedContentId], references: [id])
+}
+
+
+model StudyPlan {
+  id        String       @id @default(uuid())
+  userId    String
+  moduleId  String
+  studyTime Int          // Duração em minutos
+  day       Int          // Dia da rotina de estudos
+
+  user      User         @relation(fields: [userId], references: [id])
+  module    StudyModule  @relation(fields: [moduleId], references: [id])
+}
