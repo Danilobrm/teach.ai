@@ -10,19 +10,23 @@ export class StudyModuleService {
     return this.studyModuleRepo.create(studyModule);
   }
 
-  async findById(id: string): Promise<StudyModule | null> {
-    return this.studyModuleRepo.findById(id);
+  async findByTrackId(id: string): Promise<StudyModule[]> {
+    return this.studyModuleRepo.findByTrackId(id);
   }
 
-  async findAll(): Promise<StudyModule[]> {
-    return this.studyModuleRepo.findAll();
-  }
+  // async findById(id: string): Promise<StudyModule | null> {
+  //   return this.studyModuleRepo.findById(id);
+  // }
 
-  async update(id: string, studyModule: StudyModule): Promise<StudyModule> {
-    return this.studyModuleRepo.update(id, studyModule);
-  }
+  // async findAll(): Promise<StudyModule[]> {
+  //   return this.studyModuleRepo.findAll();
+  // }
 
-  async delete(id: string): Promise<void> {
-    return this.studyModuleRepo.delete(id);
-  }
+  // async update(id: string, studyModule: StudyModule): Promise<StudyModule> {
+  //   return this.studyModuleRepo.update(id, studyModule);
+  // }
+
+  // async delete(id: string): Promise<void> {
+  //   return this.studyModuleRepo.delete(id);
+  // }
 }

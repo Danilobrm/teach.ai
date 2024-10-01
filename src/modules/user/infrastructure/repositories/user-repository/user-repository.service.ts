@@ -13,15 +13,21 @@ export class UserRepositoryService {
         data: {
           email: user.email,
           password: user.password,
+          studyTrackId: user.studyTrackId,
+          role: user.role,
         },
       });
       return createdUser;
     } catch (error) {
-      throw new AppError(error.meta.cause);
+      throw new AppError(error);
     }
   }
 
   async getUserByEmail(email: string) {
     return await this.prisma.user.findUnique({ where: { email } });
+  }
+
+  async getUserById(user_id: string) {
+    return await this.prisma.user.findUnique({ where: { id: user_id } });
   }
 }

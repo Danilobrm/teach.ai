@@ -6,8 +6,17 @@ import { UserRepositoryService } from '../../infrastructure/repositories/user-re
 export class UserService {
   constructor(private readonly userRepository: UserRepositoryService) {}
 
-  async createUser(email: string, password: string): Promise<User> {
-    const user = new User(null, email, password);
+  async createUser(
+    email: string,
+    password: string,
+    studyTrackId: string,
+    role: string,
+  ): Promise<User> {
+    const user = new User(null, email, password, studyTrackId, role);
     return this.userRepository.create(user);
+  }
+
+  async getUserById(user_id: string): Promise<User> {
+    return this.userRepository.getUserById(user_id);
   }
 }

@@ -5,6 +5,8 @@ import { StudyTrackRepositoryService } from './infrastructure/repositories/study
 import { isAuthenticated } from '../../common/middlewares/isAuthenticated';
 import { PrismaClient } from '@prisma/client';
 import { JwtService } from '../auth/infrastructure/services/jwt.service';
+import { UserService } from '../user/application/services/user.service';
+import { UserRepositoryService } from '../user/infrastructure/repositories/user-repository/user-repository.service';
 
 @Module({
   controllers: [StudyTrackController, StudyTrackController], // Add StudyTrackController if it exists
@@ -13,6 +15,8 @@ import { JwtService } from '../auth/infrastructure/services/jwt.service';
     StudyTrackService,
     StudyTrackRepositoryService,
     JwtService,
+    UserService,
+    UserRepositoryService
   ],
   exports: [StudyTrackRepositoryService],
 })

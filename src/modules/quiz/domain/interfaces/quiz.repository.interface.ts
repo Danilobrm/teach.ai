@@ -5,7 +5,7 @@ export interface IQuizRepository {
     question: string;
     correctAnswerIndex: number;
     options: string[];
-    generatedContentId: string;
+    contentId: string;
   }): Promise<Quiz>;
 
   findById(id: string): Promise<Quiz | null>;

@@ -12,7 +12,7 @@ export class QuizRepositoryService implements IQuizRepository {
     question: string;
     correctAnswerIndex: number;
     options: string[];
-    generatedContentId: string;
+    contentId: string;
   }): Promise<Quiz> {
     try {
       const createdQuiz = await this.prisma.quiz.create({
@@ -27,13 +27,13 @@ export class QuizRepositoryService implements IQuizRepository {
   async findById(id: string): Promise<Quiz | null> {
     return await this.prisma.quiz.findUnique({
       where: { id },
-      include: { generatedContent: true }, // Include related generated content
+      include: { content: true }, // Include related generated content
     });
   }
 
   async findAll(): Promise<Quiz[]> {
     return await this.prisma.quiz.findMany({
-      include: { generatedContent: true },
+      include: { content: true },
     });
   }
 

@@ -5,6 +5,8 @@ import { StudyPlanRepositoryService } from './infrastructure/repositories/studyP
 import { PrismaClient } from '@prisma/client';
 import { isAuthenticated } from 'src/common/middlewares/isAuthenticated';
 import { JwtService } from '../auth/infrastructure/services/jwt.service';
+import { UserService } from '../user/application/services/user.service';
+import { UserRepositoryService } from '../user/infrastructure/repositories/user-repository/user-repository.service';
 
 @Module({
   controllers: [StudyPlanController],
@@ -13,6 +15,8 @@ import { JwtService } from '../auth/infrastructure/services/jwt.service';
     StudyPlanRepositoryService,
     PrismaClient,
     JwtService,
+    UserService,
+    UserRepositoryService
   ],
 })
 export class StudyPlanModule {

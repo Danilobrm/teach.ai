@@ -21,7 +21,7 @@ export class QuizController {
       question: string;
       correctAnswerIndex: number;
       options: string[];
-      generatedContentId: string;
+      contentId: string;
     },
   ) {
     return this.quizService.create(body);

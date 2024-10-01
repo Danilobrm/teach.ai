@@ -9,12 +9,23 @@ export class UserController {
 
   @Post('register')
   async register(
-    @Body() body: { password: string; email: string },
+    @Body()
+    body: {
+      password: string;
+      email: string;
+      studyTrackId: string;
+      role: string;
+    },
     @Res() res: Response,
   ): Promise<Response<{ message: string; status: number }>> {
     const password = await Password.create(body.password);
 
-    await this.userService.createUser(body.email, password.getHashedPassword());
+    await this.userService.createUser(
+      body.email,
+      password.getHashedPassword(),
+      body.studyTrackId,
+      body.role,
+    );
 
     return res.json({
       statusCode: res.statusCode,

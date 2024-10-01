@@ -10,7 +10,7 @@ export class QuizService {
     question: string;
     correctAnswerIndex: number;
     options: string[];
-    generatedContentId: string;
+    contentId: string;
   }) {
     return this.quizRepo.create(quizData);
   }
@@ -25,7 +25,11 @@ export class QuizService {
 
   async update(
     id: string,
-    quizData: { question?: string; correctAnswerIndex?: number; options?: string[] },
+    quizData: {
+      question?: string;
+      correctAnswerIndex?: number;
+      options?: string[];
+    },
   ) {
     return this.quizRepo.update(id, quizData);
   }

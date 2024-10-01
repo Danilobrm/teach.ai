@@ -20,7 +20,7 @@ export class StudyTrackRepositoryService implements IStudyTrackRepository {
       });
       return createdStudyTrack;
     } catch (error) {
-      throw new AppError(error.meta.cause);
+      throw new AppError(error);
     }
   }
 
