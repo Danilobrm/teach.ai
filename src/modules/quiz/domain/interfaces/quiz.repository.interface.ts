@@ -1,12 +1,8 @@
-import { Quiz } from '../entities/quiz.entity';
+import { Quiz } from '@prisma/client';
+import { IQuiz } from '../entities/quiz.entity';
 
 export interface IQuizRepository {
-  create(quizData: {
-    question: string;
-    correctAnswerIndex: number;
-    options: string[];
-    contentId: string;
-  }): Promise<Quiz>;
+  create(quizData: IQuiz[]): Promise<Quiz[]>;
 
   findById(id: string): Promise<Quiz | null>;
 

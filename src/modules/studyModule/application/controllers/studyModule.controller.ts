@@ -8,45 +8,55 @@ import {
   Delete,
 } from '@nestjs/common';
 import { StudyModuleService } from '../services/studyModule.service';
-import { StudyModule } from '../../domain/entities/studyModule.entity';
-import { Content } from '@prisma/client';
-import { ContentController } from 'src/modules/content/application/controllers/content.controller';
+import { IStudyModule } from '../../domain/entities/studyModule.entity';
+import { Content, StudyModule } from '@prisma/client';
+import { IContent } from 'src/modules/content/domain/entities/content.entity';
+import { ContentService } from 'src/modules/content/application/services/content.service';
 
 @Controller('studyModule')
 export class StudyModuleController {
   constructor(
     private readonly studyModuleService: StudyModuleService,
-    private readonly contentController: ContentController,
+    private readonly contentService: ContentService,
   ) {}
 
   @Post('/create')
   async create(
     @Body()
     body: {
-      content: Content;
+      content: {
+        title: string;
+        description?: string;
+        prompt?: string;
+        max_tokens?: number;
+      };
       trackId: string;
     },
-  ) {
+  ): Promise<StudyModule> {
     // const content = await this.contentController.create(body.content);
     // const studyModule = new StudyModule(content, body.trackId);
 
-    return this.studyModuleService.create(body);
+    const content = await this.contentService.createContent(body.content);
+
+    const studyModule = new IStudyModule(content.id, body.trackId);
+
+    return this.studyModuleService.create(studyModule);
   }
 
-  @Get('track/:id')
-  async findByTrackId(@Param('id') id: string) {
-    return this.studyModuleService.findByTrackId(id);
-  }
+  // @Get('track/:id')
+  // async findByTrackId(@Param('id') id: string) {
+  //   return this.studyModuleService.findByTrackId(id);
+  // }
 
   // @Get(':id')
   // async findById(@Param('id') id: string) {
   //   return this.studyModuleService.findById(id);
   // }
 
-  // @Get()
-  // async findAll() {
-  //   return this.studyModuleService.findAll();
-  // }
+  @Get()
+  async findAll() {
+    return this.studyModuleService.findAll();
+  }
 
   // @Put(':id')
   // async update(

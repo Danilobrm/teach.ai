@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Content } from '../../../domain/entities/content.entity';
-import { PrismaClient } from '@prisma/client';
+import { IContent } from '../../../domain/entities/content.entity';
+import { Content, PrismaClient } from '@prisma/client';
 import { AppError } from '../../../../../common/errors/AppError';
 // import { IContentRepository } from '../../../domain/interfaces/content.repository.interface';
 
@@ -9,17 +9,25 @@ import { AppError } from '../../../../../common/errors/AppError';
 export class ContentRepositoryService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(content: Content): Promise<Content> {
+  async create(content: IContent): Promise<Content> {
     try {
       const createdContent = await this.prisma.content.create({
         data: {
           title: content.title,
-          description: content.description,
+          description: content.description || '',
+          prompt: {
+            create: {
+              prompt: content.prompt || '',
+            },
+          },
+        },
+        include: {
+          prompt: true,
         },
       });
       return createdContent;
     } catch (error) {
-      throw new AppError(error.meta.cause);
+      throw new AppError(error);
     }
   }
 
@@ -32,6 +40,12 @@ export class ContentRepositoryService {
       include: {
         quizzes: true,
       },
+    });
+  }
+
+  async findById(id: string): Promise<Content> {
+    return await this.prisma.content.findUnique({
+      where: { id },
     });
   }
 

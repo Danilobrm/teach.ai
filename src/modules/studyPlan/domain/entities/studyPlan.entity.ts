@@ -6,3 +6,9 @@ export class StudyPlan {
     public day: number,
   ) {}
 }
+export class IStudyPlanPerDay {
+  constructor(
+    public userId: string,
+    public studyPlan: StudyPlan[],
+  ) {}
+}

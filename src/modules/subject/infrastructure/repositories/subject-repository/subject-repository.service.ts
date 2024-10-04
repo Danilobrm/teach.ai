@@ -9,15 +9,8 @@ export class SubjectRepositoryService {
   async create(subject: Subject): Promise<Subject> {
     const createdSubject = await this.prisma.subject.create({
       data: {
-        content: {
-          create: {
-            title: subject.content.title,
-            description: subject.content.description,
-          },
-        },
-        module: subject.moduleId
-          ? { connect: { id: subject.moduleId } }
-          : undefined, // Optional module association
+        moduleId: subject.moduleId,
+        contentId: subject.contentId,
       },
       include: {
         content: true,

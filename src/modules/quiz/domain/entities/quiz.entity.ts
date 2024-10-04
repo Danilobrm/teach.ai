@@ -1,4 +1,4 @@
-export class Quiz {
+export class IQuiz {
   question: string; // Text of the quiz question
   correctAnswerIndex: number; // The correct answer for the quiz
   options: string[]; // Array of answer options for the quiz

@@ -7,6 +7,8 @@ import { isAuthenticated } from 'src/common/middlewares/isAuthenticated';
 import { JwtService } from '../auth/infrastructure/services/jwt.service';
 import { UserService } from '../user/application/services/user.service';
 import { UserRepositoryService } from '../user/infrastructure/repositories/user-repository/user-repository.service';
+import { ContentService } from '../content/application/services/content.service';
+import { ContentRepositoryService } from '../content/infrastructure/repositories/content-repository/content-repository.service';
 
 @Module({
   controllers: [QuizController],
@@ -16,7 +18,9 @@ import { UserRepositoryService } from '../user/infrastructure/repositories/user-
     PrismaClient,
     JwtService,
     UserService,
-    UserRepositoryService
+    UserRepositoryService,
+    ContentService,
+    ContentRepositoryService,
   ],
 })
 export class QuizModule {

@@ -15,6 +15,7 @@ export class UserRepositoryService {
           password: user.password,
           studyTrackId: user.studyTrackId,
           role: user.role,
+          dailyStudyTime: user.dailyStudyTime,
         },
       });
       return createdUser;
@@ -28,6 +29,15 @@ export class UserRepositoryService {
   }
 
   async getUserById(user_id: string) {
-    return await this.prisma.user.findUnique({ where: { id: user_id } });
+    return await this.prisma.user.findUnique({
+      where: { id: user_id },
+      include: {
+        studyTrack: {
+          include: {
+            modules: { include: { content: { select: { title: true } } } },
+          },
+        },
+      },
+    });
   }
 }

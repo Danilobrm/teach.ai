@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { AppError } from '../../../../../common/errors/AppError';
-import { Content } from 'src/modules/content/domain/entities/content.entity';
+import { Topic } from '../../../domain/entities/topic.entity';
 
 @Injectable()
 export class TopicRepositoryService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(topic: { content: Content; subjectId: string }) {
+  async create(topic: Topic) {
     const createdTopic = await this.prisma.topic.create({
       data: {
-        content: {
-          create: {
-            title: topic.content.title,
-            description: topic.content.description,
-          },
-        },
-        subject: {
-          connect: {
-            id: topic.subjectId,
-          },
-        },
+        subjectId: topic.subjectId,
+        contentId: topic.contentId
       },
     });
 
@@ -33,11 +24,11 @@ export class TopicRepositoryService {
   //   });
   // }
 
-  // async findBySubjectId(subjectId: string): Promise<Topic[]> {
-  //   return await this.prisma.topic.findMany({
-  //     where: { subjectId },
-  //   });
-  // }
+  async findBySubjectId(subjectId: string): Promise<Topic[]> {
+    return await this.prisma.topic.findMany({
+      where: { subjectId },
+    });
+  }
 
   async findAll() {
     return await this.prisma.topic.findMany({

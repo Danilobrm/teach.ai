@@ -11,8 +11,16 @@ export class UserService {
     password: string,
     studyTrackId: string,
     role: string,
+    dailyStudyTime: number,
   ): Promise<User> {
-    const user = new User(null, email, password, studyTrackId, role);
+    const user = new User(
+      null,
+      email,
+      password,
+      studyTrackId,
+      role,
+      dailyStudyTime,
+    );
     return this.userRepository.create(user);
   }
 

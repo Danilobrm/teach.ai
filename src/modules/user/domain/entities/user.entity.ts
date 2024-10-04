@@ -5,5 +5,6 @@ export class User {
     public password: string,
     public studyTrackId: string,
     public role: string,
+    public dailyStudyTime: number,
   ) {}
 }

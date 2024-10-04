@@ -22,6 +22,6 @@ import { UserRepositoryService } from '../user/infrastructure/repositories/user-
 })
 export class StudyTrackModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(isAuthenticated).forRoutes('studyTrack');
+    // consumer.apply(isAuthenticated).forRoutes('studyTrack');
   }
 }

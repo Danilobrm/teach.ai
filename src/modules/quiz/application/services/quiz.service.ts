@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Quiz } from '../../domain/entities/quiz.entity';
+import { IQuiz } from '../../domain/entities/quiz.entity';
 import { QuizRepositoryService } from '../../infrastructure/repositories/quiz-repository/quiz-repository.service';
 
 @Injectable()
 export class QuizService {
   constructor(private readonly quizRepo: QuizRepositoryService) {}
 
-  async create(quizData: {
-    question: string;
-    correctAnswerIndex: number;
-    options: string[];
-    contentId: string;
-  }) {
+  async create(quizData: IQuiz[]) {
     return this.quizRepo.create(quizData);
   }
 

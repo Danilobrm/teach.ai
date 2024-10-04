@@ -9,24 +9,34 @@ import {
 } from '@nestjs/common';
 import { SubjectService } from '../services/subject.service';
 import { Content } from '@prisma/client';
-import { ContentController } from 'src/modules/content/application/controllers/content.controller';
+import { IContent } from 'src/modules/content/domain/entities/content.entity';
+import { ContentService } from 'src/modules/content/application/services/content.service';
+import { Subject } from '../../domain/entities/subject.entity';
 
 @Controller('subject')
 export class SubjectController {
   constructor(
     private readonly subjectService: SubjectService,
-    private readonly contentController: ContentController,
+    private readonly contentService: ContentService,
   ) {}
 
   @Post('/create')
   async create(
     @Body()
     body: {
-      content: Content;
-      moduleId?: string; // Optional moduleId association
+      content: {
+        title: string;
+        description: string;
+        prompt?: string;
+        max_tokens: number;
+      };
+      moduleId: string;
     },
   ) {
-    return this.subjectService.create(body);
+    const content = await this.contentService.createContent(body.content);
+
+    const subject = new Subject(content.id, body.moduleId);
+    return this.subjectService.create(subject);
   }
 
   @Get('track/:id')

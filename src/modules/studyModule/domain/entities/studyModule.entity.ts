@@ -1,8 +1,6 @@
-import { Content } from '@prisma/client';
-
-export class StudyModule {
+export class IStudyModule {
   constructor(
-    public content: Content,
+    public contentId: string,
     public trackId: string,
   ) {}
 }

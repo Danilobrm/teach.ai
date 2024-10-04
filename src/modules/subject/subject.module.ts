@@ -6,7 +6,6 @@ import { PrismaClient } from '@prisma/client';
 import { isAuthenticated } from 'src/common/middlewares/isAuthenticated';
 import { JwtService } from '../auth/infrastructure/services/jwt.service';
 import { ContentModule } from '../content/content.module';
-import { ContentController } from '../content/application/controllers/content.controller';
 import { UserService } from '../user/application/services/user.service';
 import { UserRepositoryService } from '../user/infrastructure/repositories/user-repository/user-repository.service';
 
@@ -20,7 +19,6 @@ import { UserRepositoryService } from '../user/infrastructure/repositories/user-
     JwtService,
     UserService,
     UserRepositoryService,
-    ContentController,
   ],
 })
 export class SubjectModule {

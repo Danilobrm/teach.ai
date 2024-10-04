@@ -15,6 +15,7 @@ export class UserController {
       email: string;
       studyTrackId: string;
       role: string;
+      dailyStudyTime: number;
     },
     @Res() res: Response,
   ): Promise<Response<{ message: string; status: number }>> {
@@ -25,6 +26,7 @@ export class UserController {
       password.getHashedPassword(),
       body.studyTrackId,
       body.role,
+      body.dailyStudyTime,
     );
 
     return res.json({

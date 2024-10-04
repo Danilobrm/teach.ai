@@ -1,24 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Quiz } from '@prisma/client';
 import { AppError } from '../../../../../common/errors/AppError';
 import { IQuizRepository } from '../../../domain/interfaces/quiz.repository.interface';
-import { Quiz } from '../../../domain/entities/quiz.entity';
+import { IQuiz } from '../../../domain/entities/quiz.entity';
 
 @Injectable()
 export class QuizRepositoryService implements IQuizRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(quizData: {
-    question: string;
-    correctAnswerIndex: number;
-    options: string[];
-    contentId: string;
-  }): Promise<Quiz> {
+  async create(quizData: IQuiz[]): Promise<Quiz[]> {
     try {
-      const createdQuiz = await this.prisma.quiz.create({
-        data: quizData,
-      });
-      return createdQuiz;
+      return await Promise.all(
+        quizData.map(
+          async (quiz) =>
+            await this.prisma.quiz.create({
+              data: {
+                question: quiz.question,
+                options: quiz.options,
+                correctAnswerIndex: quiz.correctAnswerIndex,
+                content: { connect: { id: quiz.contentId } },
+              },
+            }),
+        ),
+      );
     } catch (error) {
       throw new AppError(error);
     }
@@ -32,9 +36,7 @@ export class QuizRepositoryService implements IQuizRepository {
   }
 
   async findAll(): Promise<Quiz[]> {
-    return await this.prisma.quiz.findMany({
-      include: { content: true },
-    });
+    return await this.prisma.quiz.findMany({});
   }
 
   async update(

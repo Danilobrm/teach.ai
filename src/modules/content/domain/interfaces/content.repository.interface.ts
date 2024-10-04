@@ -1,9 +1,9 @@
-import { Content } from '../entities/content.entity';
+import { IContent } from '../entities/content.entity';
 
 export interface IContentRepository {
-  create(content: Content): Promise<Content>;
-  findById(id: string): Promise<Content | null>;
-  findAll(): Promise<Content[]>;
-  update(id: string, content: Content): Promise<Content>;
+  create(content: IContent): Promise<IContent>;
+  findById(id: string): Promise<IContent | null>;
+  findAll(): Promise<IContent[]>;
+  update(id: string, content: IContent): Promise<IContent>;
   delete(id: string): Promise<void>;
 }

@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { StudyModule } from '../../domain/entities/studyModule.entity';
+import { IStudyModule } from '../../domain/entities/studyModule.entity';
 import { StudyModuleRepositoryService } from '../../infrastructure/repositories/studyModule-repository/studyModule-repository.service';
+import { StudyModule } from '@prisma/client';
 
 @Injectable()
 export class StudyModuleService {
   constructor(private readonly studyModuleRepo: StudyModuleRepositoryService) {}
 
-  async create(studyModule: StudyModule): Promise<StudyModule> {
+  async create(studyModule: IStudyModule): Promise<StudyModule> {
     return this.studyModuleRepo.create(studyModule);
   }
 
-  async findByTrackId(id: string): Promise<StudyModule[]> {
-    return this.studyModuleRepo.findByTrackId(id);
-  }
+  // async findByTrackId(id: string): Promise<StudyModule[]> {
+  //   return this.studyModuleRepo.findByTrackId(id);
+  // }
 
   // async findById(id: string): Promise<StudyModule | null> {
   //   return this.studyModuleRepo.findById(id);
   // }
 
-  // async findAll(): Promise<StudyModule[]> {
-  //   return this.studyModuleRepo.findAll();
-  // }
+  async findAll(): Promise<StudyModule[]> {
+    return this.studyModuleRepo.findAll();
+  }
 
   // async update(id: string, studyModule: StudyModule): Promise<StudyModule> {
   //   return this.studyModuleRepo.update(id, studyModule);

@@ -1,8 +1,6 @@
-import { Content } from '@prisma/client';
-
 export class Subject {
   constructor(
-    public content: Content,
-    public moduleId?: string,
+    public contentId: string,
+    public moduleId: string,
   ) {}
 }

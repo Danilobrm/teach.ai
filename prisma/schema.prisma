@@ -11,12 +11,20 @@ model User {
   id               String        @id @default(uuid())
   password         String
   email            String        @unique
-  dailyStudyTime   Int?          // Tempo de estudo diário em minutos (opcional)
+
+  dailyStudyTime   Int          // Tempo de estudo diário em minutos (opcional)
   studyTrackId     String       // Chave estrangeira para a trilha de estudos
-  studyPlans       StudyPlan[]
   studyTrack       StudyTrack   @relation(fields: [studyTrackId], references: [id])
+  studyPlansPerDay       StudyPlanPerDay[]
   quizProgress     UserQuizProgress[] // Relacionamento com o progresso do quiz
   role             String
+}
+
+model StudyPlanPerDay {
+  id          String       @id @default(uuid())
+  userId      String       // Chave estrangeira para o usuário
+  user        User         @relation(fields: [userId], references: [id])
+  studyPlans  StudyPlan[]  // Lista de planos de estudo associados a este grupo
 }
 
 model StudyTrack {
@@ -28,6 +36,13 @@ model StudyTrack {
   User User[] 
 }
 
+model OpenaiPrompt {
+  id          String      @id @default(uuid())
+  prompt      String
+
+  content Content[]
+}
+
 model Content {
   id          String      @id @default(uuid())
   title       String      
@@ -37,6 +52,9 @@ model Content {
   StudyModule StudyModule[]
   Topic Topic[]
   Subject Subject[]
+  
+  promptId    String?
+  prompt      OpenaiPrompt?      @relation(fields: [promptId], references: [id])
 }
 
 model StudyModule {
@@ -92,8 +110,9 @@ model StudyPlan {
   studyTime Int          
   day       Int          
 
-  user      User         @relation(fields: [userId], references: [id])
   module    StudyModule  @relation(fields: [moduleId], references: [id])
+
+  StudyPlanPerDay StudyPlanPerDay[]
 }
 
 model UserQuizProgress {

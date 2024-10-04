@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { StudyModule } from '../../../domain/entities/studyModule.entity';
+import { PrismaClient, StudyModule } from '@prisma/client';
+import { IStudyModule } from '../../../domain/entities/studyModule.entity';
 import { AppError } from '../../../../../common/errors/AppError';
 import { IStudyModuleRepository } from '../../../domain/interfaces/studyModule.repository.interface';
 
@@ -8,27 +8,15 @@ import { IStudyModuleRepository } from '../../../domain/interfaces/studyModule.r
 export class StudyModuleRepositoryService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(studyModule: StudyModule): Promise<StudyModule> {
+  async create(studyModule: IStudyModule): Promise<StudyModule> {
     const createdStudyModule = await this.prisma.studyModule.create({
-      data: {
-        content: {
-          create: {
-            title: studyModule.content.title,
-            description: studyModule.content.description,
-          },
-        },
-        track: {
-          connect: {
-            id: studyModule.trackId,
-          },
-        },
-      },
+      data: { contentId: studyModule.contentId, trackId: studyModule.trackId },
       include: {
         content: true,
         subjects: true,
       },
     });
-
+    studyModule;
     return createdStudyModule;
   }
 
@@ -36,20 +24,21 @@ export class StudyModuleRepositoryService {
   //   return await this.prisma.studyModule.findUnique({ where: { id } });
   // }
 
-  async findByTrackId(trackId: string): Promise<StudyModule[]> {
-    return await this.prisma.studyModule.findMany({
-      where: { trackId: trackId },
-      select: { id: true, content: true, trackId: true },
-    });
-  }
-
-  // async findAll(): Promise<StudyModule[]> {
+  // async findByTrackId(trackId: string): Promise<StudyModule[]> {
   //   return await this.prisma.studyModule.findMany({
-  //     include: {
-  //       content: true,
-  //     },
+  //     where: { trackId: trackId },
+  //     select: { id: true, content: true, trackId: true },
   //   });
   // }
+
+  async findAll(): Promise<StudyModule[]> {
+    return await this.prisma.studyModule.findMany({
+      include: {
+        content: true,
+        subjects: true,
+      },
+    });
+  }
 
   // async update(id: string, studyModule: StudyModule): Promise<StudyModule> {
   //   try {

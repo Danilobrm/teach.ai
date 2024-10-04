@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { TopicRepositoryService } from '../../infrastructure/repositories/topic/topic-repository.service';
 import { Topic } from '../../domain/entities/topic.entity';
-import { Content } from 'src/modules/content/domain/entities/content.entity';
 
 @Injectable()
 export class TopicService {
   constructor(private readonly topicRepo: TopicRepositoryService) {}
 
   // Create a new topic, linking content and subject
-  async create(topic: { content: Content; subjectId: string }) {
+  async create(topic: { contentId: string; subjectId: string }) {
     return this.topicRepo.create(topic);
   }
 
